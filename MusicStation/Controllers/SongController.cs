@@ -25,6 +25,23 @@ namespace MusicStation.Controllers
             }
         }
 
+        public ActionResult ListByUser(string user)
+        {
+            using (var db = new MusicStationDbContext())
+            {
+                if(user == null)
+                {
+                    return HttpNotFound()
+;                }
+
+                var songs = db.Songs
+                    .Where(s => s.User.UserName == user)
+                    .ToList();
+
+                return View(songs);
+            }
+        }
+
         [HttpGet]
         public ActionResult Details(int? id)
         {

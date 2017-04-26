@@ -8,6 +8,10 @@
     <div class="row" style="padding-top: 20px">
         <div class="col-lg-4">
             <img src="@Model.ImagePath" class="img-responsive; img-thumbnail" />
+
+            <div class="row" style="padding-top:20px">
+                <a href="/Song/ListByUser?user=@Model.User.UserName" class="btn">All Songs By This User</a>
+            </div>
         </div>
        <div class="col-lg-8">
            <div class="row">

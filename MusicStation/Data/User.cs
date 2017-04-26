@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 public class User : IdentityUser
 {
-    public virtual ICollection<Song> Playlists { get; set; }
+    public virtual ICollection<Song> Songs { get; set; }
     
     public User()
     {
-        this.Playlists = new HashSet<Song>();
+        this.Songs = new HashSet<Song>();
     }
 
     public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
