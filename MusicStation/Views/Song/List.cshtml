@@ -1,0 +1,33 @@
+﻿@model List<MusicStation.Data.Song>
+
+@{ 
+    ViewBag.Title = "List";
+}
+
+<div class="container">
+    <div class="row">
+        @foreach(var song in Model)
+        {
+            <div class="col-sm-6">
+                <p>
+                    <h2>
+                        @Html.ActionLink(@song.Title, "Details", "Song", new { @id = song.Id},null)
+                    </h2>
+                </p>
+                <p>
+                    <h3>
+                        @song.Artist
+                    </h3>
+                </p>
+                <audio preload="auto" controls="controls" src="@song.FilePath">
+                    @song.Title - @song.Artist
+                </audio>
+                <footer class="pull-right">
+                    <small>
+                        -- Added by @song.User.UserName
+                    </small>
+                </footer>
+            </div>
+        }
+    </div>
+</div>

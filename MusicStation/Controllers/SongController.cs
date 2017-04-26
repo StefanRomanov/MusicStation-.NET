@@ -3,6 +3,7 @@ using MusicStation.Data;
 using MusicStation.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,6 +12,20 @@ namespace MusicStation.Controllers
 {
     public class SongController : Controller
     {
+        [HttpGet]
+        public ActionResult List()
+        {
+            using(var db = new MusicStationDbContext())
+            {
+                var songs = db.Songs
+                    .Include(s => s.User)
+                    .ToList();
+
+                return View(songs);
+            }
+        }
+        
+
         [Authorize]
         [HttpGet]
         public ActionResult Add()
@@ -18,7 +33,9 @@ namespace MusicStation.Controllers
             return View();
         }
 
-        public ActionResult Add(Song song, HttpPostedFileBase file)
+        [Authorize]
+        [HttpPost]
+        public ActionResult Add(Song song, HttpPostedFileBase FilePath)
         {
             if(ModelState.IsValid)
             {
@@ -30,12 +47,12 @@ namespace MusicStation.Controllers
 
                     var filePath = "/Content/Songs/";
 
-                    var fileName = file.FileName;
+                    var fileName = FilePath.FileName;
 
                     var uploadPath = filePath + fileName;
                     var physicalPath = Server.MapPath(uploadPath);
 
-                    file.SaveAs(physicalPath);
+                    FilePath.SaveAs(physicalPath);
 
                     song.FilePath = uploadPath;
 
