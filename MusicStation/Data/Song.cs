@@ -22,6 +22,7 @@ namespace MusicStation.Data
 
         public Genre Genre { get; set; }
         
+        [Required]
         public string FilePath { get; set; }
 
         public string UserId { get; set; }

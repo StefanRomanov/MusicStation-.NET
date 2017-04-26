@@ -18,7 +18,7 @@ namespace MusicStation.Controllers
             return View();
         }
 
-        public ActionResult Add(Song song, HttpPostedFileBase file)
+        public ActionResult Add(Song song, HttpPostedFileBase FilePath)
         {
             if(ModelState.IsValid)
             {
@@ -30,12 +30,12 @@ namespace MusicStation.Controllers
 
                     var filePath = "/Content/Songs/";
 
-                    var fileName = file.FileName;
+                    var fileName = FilePath.FileName;
 
                     var uploadPath = filePath + fileName;
                     var physicalPath = Server.MapPath(uploadPath);
 
-                    file.SaveAs(physicalPath);
+                    FilePath.SaveAs(physicalPath);
 
                     song.FilePath = uploadPath;
 
