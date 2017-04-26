@@ -21,8 +21,9 @@ namespace MusicStation.Data
         public string Lyrics { get; set; }
 
         public Genre Genre { get; set; }
-        
+
         [Required]
+        [Display(Name ="File")]
         public string FilePath { get; set; }
 
         public string UserId { get; set; }
