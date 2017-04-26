@@ -24,7 +24,32 @@ namespace MusicStation.Controllers
                 return View(songs);
             }
         }
-        
+
+        [HttpGet]
+        public ActionResult Details(int? id)
+        {
+            if(id == null)
+            {
+                return HttpNotFound();
+            }
+
+            using (var db = new MusicStationDbContext())
+            {
+                var song = db.Songs
+                    .Where(s => s.Id == id)
+                    .Include(s => s.User)
+                    .First();
+                    
+
+                if(song == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(song);
+            }
+        }
+
 
         [Authorize]
         [HttpGet]
@@ -35,7 +60,7 @@ namespace MusicStation.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult Add(Song song, HttpPostedFileBase FilePath)
+        public ActionResult Add(Song song, HttpPostedFileBase FilePath, HttpPostedFileBase image)
         {
             if(ModelState.IsValid)
             {
@@ -46,11 +71,21 @@ namespace MusicStation.Controllers
                     song.UserId = userId;
 
                     var filePath = "/Content/Songs/";
-
+                    var imagesPath = "/Content/Images/";
                     var fileName = FilePath.FileName;
-
                     var uploadPath = filePath + fileName;
                     var physicalPath = Server.MapPath(uploadPath);
+
+                    if(image != null)
+                    {
+                        var imageName = image.FileName;
+                        var imageUploadPath = imagesPath + imageName;
+                        var imagePhysicalPath = Server.MapPath(imageUploadPath);
+
+                        image.SaveAs(imagePhysicalPath);
+
+                        song.ImagePath = imageUploadPath;
+                    }
 
                     FilePath.SaveAs(physicalPath);
 

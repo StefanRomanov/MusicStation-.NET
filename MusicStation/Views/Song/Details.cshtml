@@ -1,0 +1,28 @@
+﻿@model MusicStation.Data.Song
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="container">
+    <div class="row" style="padding-top: 20px">
+        <div class="col-lg-4">
+            <img src="@Model.ImagePath" class="img-responsive; img-thumbnail" />
+        </div>
+       <div class="col-lg-8">
+           <div class="row">
+               <audio preload="auto" controls="controls" src="@Model.FilePath" style="width: 750px"></audio>
+           </div>
+           <div class="row">
+               <h3>Additional information</h3>
+               <p style="white-space:pre-wrap">
+                   @Model.Details
+               </p>
+               
+           </div>
+       </div>
+    </div>
+    <footer class="pull-right">
+        @Html.ActionLink("Back", "List", "Song", null, new { @class = "btn btn-default btn-xs" })
+    </footer>
+</div>

@@ -1,11 +1,13 @@
 ﻿@model MusicStation.Data.Song
-{
+@{
     ViewBag.Title = "Add";
 }
 
 <div class="container">
     <div class="well">
-        <h2>Create Article</h2>
+        <h2 style="align-content:center">
+            Add Your Song
+        </h2>
         @using (Html.BeginForm("Add", "Song", FormMethod.Post, new {enctype="multipart/form-data", @class = "form-horizontal" }))
         {
             @Html.AntiForgeryToken()
@@ -29,10 +31,16 @@
                     @Html.EnumDropDownListFor(m => m.Genre, new { @class = "form-control" })
                 </div>
             </div>
+            <div class="form-group" >
+                @Html.LabelFor(m => m.Details, new { @class = "control-label col-sm-4" })
+                <div class="col-sm-4" style="white-space:pre-wrap">
+                    @Html.TextAreaFor(m => m.Details, new {  @class = "form-control", @rows = "7" })
+                </div>
+            </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.Lyrics, new { @class = "control-label col-sm-4" })
+                @Html.Label("image", new { @class = "control-label col-sm-4" })
                 <div class="col-sm-4">
-                    @Html.TextAreaFor(m => m.Lyrics, new { @class = "form-control", @rows = "7" })
+                    @Html.TextBox("image", null, new { type = "file", @class = "form-control", @rows = "7" })
                 </div>
             </div>
             <div class="form-group">

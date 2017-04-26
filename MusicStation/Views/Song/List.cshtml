@@ -6,22 +6,34 @@
 
 <div class="container">
     <div class="row">
-        @foreach(var song in Model)
+        @foreach (var song in Model)
         {
-            <div class="col-sm-12">
+            <div class="container" style="margin-bottom: 10px; margin-top: 10px">
+                <div class="col-sm-2">
+                @if (@song.ImagePath != null)
+                {
+                    <a href="@Url.Action("Details", "Song", new { @id = song.Id }, null)">
+                        <img src="@song.ImagePath" class="img-responsive; img-thumbnail" />
+                    </a>
+                }
+                </div>
+                <div class="col-sm-10">
                 <p>
                     <h4>
-                        @Html.ActionLink(@song.Title +"-"+ @song.Artist, "Details", "Song", new { @id = song.Id},null)
+                        @Html.ActionLink(@song.Artist + " - " + @song.Title, "Details", "Song", new { @id = song.Id }, null)
                     </h4>
                 </p>
-                <audio preload="auto" controls="controls" style="width:inherit" src="@song.FilePath">
-                    @song.Title - @song.Artist
-                </audio>
+                <p>
+                    <audio preload="auto" controls="controls" style="width: 700px" src="@song.FilePath">
+                        @song.Title - @song.Artist
+                    </audio>
+                </p>
                 <footer class="pull-right">
                     <small>
                         -- Added by @song.User.UserName
                     </small>
                 </footer>
+                </div>
             </div>
         }
     </div>

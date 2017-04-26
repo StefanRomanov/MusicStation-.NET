@@ -15,12 +15,14 @@ namespace MusicStation.Data
         public string Artist { get; set; }
 
         [Required]
+        [StringLength(50)]
         public string Title { get; set; }
-        
 
-        public string Lyrics { get; set; }
+        public string Details { get; set; }
 
         public Genre Genre { get; set; }
+
+        public string ImagePath { get; set; }
 
         [Required]
         [Display(Name ="File")]
