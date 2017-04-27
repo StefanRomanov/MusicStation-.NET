@@ -31,11 +31,28 @@ namespace MusicStation.Controllers
             {
                 if(user == null)
                 {
-                    return HttpNotFound()
-;                }
+                    return HttpNotFound();
+                }
 
                 var songs = db.Songs
                     .Where(s => s.User.UserName == user)
+                    .ToList();
+
+                return View(songs);
+            }
+        }
+
+        public ActionResult ListByGenre(string genre)
+        {
+            if(genre == null)
+            {
+                return HttpNotFound();
+            }
+
+            using (var db = new MusicStationDbContext())
+            {
+                var songs = db.Songs
+                    .Where(s => s.Genre.ToString() == genre)
                     .ToList();
 
                 return View(songs);

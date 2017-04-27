@@ -272,6 +272,7 @@
     <Content Include="Views\Song\List.cshtml" />
     <Content Include="Views\Song\Details.cshtml" />
     <Content Include="Views\Song\ListByUser.cshtml" />
+    <Content Include="Views\Song\ListByGenre.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
