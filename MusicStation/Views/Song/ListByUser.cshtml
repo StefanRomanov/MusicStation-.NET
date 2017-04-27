@@ -13,7 +13,7 @@
                     @if (@song.ImagePath != null)
                 {
                         <a href="@Url.Action("Details", "Song", new { @id = song.Id }, null)">
-                            <img src="@song.ImagePath" class="img-responsive; img-thumbnail" />
+                            <img src="@song.ImagePath" class="img-responsive; img-thumbnail" style="height: 140px; width: 150px" />
                         </a>
                     }
                 </div>

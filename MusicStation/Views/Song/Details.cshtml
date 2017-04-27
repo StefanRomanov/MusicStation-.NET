@@ -9,13 +9,18 @@
         <div class="col-lg-4">
             <img src="@Model.ImagePath" class="img-responsive; img-thumbnail" />
 
-            <div class="row" style="padding-top:20px">
-                <a href="/Song/ListByUser?user=@Model.User.UserName" class="btn">All Songs By This User</a>
+            <div class="row" style="padding-top:30px" >
+                <a class="btn btn-default btn-sm" href="/Song/ListByUser?user=@Model.User.UserName" >All Songs By This User</a>
             </div>
         </div>
        <div class="col-lg-8">
            <div class="row">
-               <audio preload="auto" controls="controls" src="@Model.FilePath" style="width: 750px"></audio>
+               <h3 style="font:bold, Times New Roman">
+                   @Model.Artist - @Model.Title
+               </h3>
+           </div>
+           <div class="row">
+               <audio preload="none" controls="controls" src="@Model.FilePath" style="width: 750px"></audio>
            </div>
            <div class="row">
                <h3>Additional information</h3>
@@ -26,7 +31,8 @@
            </div>
        </div>
     </div>
-    <footer class="pull-right">
-        @Html.ActionLink("Back", "List", "Song", null, new { @class = "btn btn-default btn-xs" })
+    <footer class="pull-right" style="padding-right: 10px">
+        @Html.ActionLink("Delete", "Delete", "Song", new { @id = Model.Id }, new { @class = "btn btn-danger btn-sm" })
+        @Html.ActionLink("Back", "List", "Song", null, new { @class = "btn btn-default btn-sm" })
     </footer>
 </div>

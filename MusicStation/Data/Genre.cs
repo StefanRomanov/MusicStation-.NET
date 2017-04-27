@@ -14,7 +14,6 @@ namespace MusicStation.Data
         Rap,
         Pop,
         Folk,
-        Other,
-        Mixed
+        Other
     }
 }

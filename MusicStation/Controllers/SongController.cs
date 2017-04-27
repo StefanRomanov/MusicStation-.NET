@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using MusicStation.Data;
 using MusicStation.Models;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -25,6 +24,7 @@ namespace MusicStation.Controllers
             }
         }
 
+        [HttpGet]
         public ActionResult ListByUser(string user)
         {
             using (var db = new MusicStationDbContext())
@@ -36,12 +36,14 @@ namespace MusicStation.Controllers
 
                 var songs = db.Songs
                     .Where(s => s.User.UserName == user)
+                    .Include(s => s.User)
                     .ToList();
 
                 return View(songs);
             }
         }
 
+        [HttpGet]
         public ActionResult ListByGenre(string genre)
         {
             if(genre == null)
@@ -53,6 +55,7 @@ namespace MusicStation.Controllers
             {
                 var songs = db.Songs
                     .Where(s => s.Genre.ToString() == genre)
+                    .Include(s => s.User)
                     .ToList();
 
                 return View(songs);
@@ -72,7 +75,7 @@ namespace MusicStation.Controllers
                 var song = db.Songs
                     .Where(s => s.Id == id)
                     .Include(s => s.User)
-                    .First();
+                    .FirstOrDefault();
                     
 
                 if(song == null)
@@ -83,7 +86,6 @@ namespace MusicStation.Controllers
                 return View(song);
             }
         }
-
 
         [Authorize]
         [HttpGet]
@@ -133,6 +135,71 @@ namespace MusicStation.Controllers
             }
 
             return View(song);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public ActionResult Delete(int? id)
+        {
+            if(id == null)
+            {
+                return HttpNotFound();
+            }
+
+            using (var db = new MusicStationDbContext())
+            {
+                var song = db.Songs
+                    .Where(s => s.Id == id)
+                    .Include(s => s.User)
+                    .FirstOrDefault();
+
+                if (song == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(song);
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult ConfirmDelete(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+
+            using (var db = new MusicStationDbContext())
+            {
+                var song = db.Songs
+                    .Where(s => s.Id == id)
+                    .Include(s => s.User)
+                    .FirstOrDefault();
+
+                if (song == null)
+                {
+                    return HttpNotFound();
+                }
+
+                var filePath = Request.MapPath(song.FilePath);
+                var imagePath = Request.MapPath(song.ImagePath);
+
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+
+                System.IO.File.Delete(filePath);
+
+                db.Songs.Remove(song);
+                db.SaveChanges();
+
+                return RedirectToAction("List");
+            }
         }
     }
 }

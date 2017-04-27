@@ -5,9 +5,9 @@
 
 <div class="container">
     <div class="well">
-        <h2 style="align-content:center">
+        <h3 >
             Add Your Song
-        </h2>
+        </h3>
         @using (Html.BeginForm("Add", "Song", FormMethod.Post, new {enctype="multipart/form-data", @class = "form-horizontal" }))
         {
             @Html.AntiForgeryToken()
@@ -33,7 +33,7 @@
             </div>
             <div class="form-group" >
                 @Html.LabelFor(m => m.Details, new { @class = "control-label col-sm-4" })
-                <div class="col-sm-4" style="white-space:pre-wrap">
+                <div class="col-sm-4">
                     @Html.TextAreaFor(m => m.Details, new {  @class = "form-control", @rows = "7" })
                 </div>
             </div>
