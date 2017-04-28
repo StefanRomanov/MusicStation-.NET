@@ -5,7 +5,7 @@ namespace MusicStation.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<MusicStation.Models.MusicStationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<MusicStation.Data.MusicStationDbContext>
     {
         public Configuration()
         {
@@ -14,7 +14,7 @@ namespace MusicStation.Migrations
             AutomaticMigrationDataLossAllowed = true;
         }
 
-        protected override void Seed(MusicStation.Models.MusicStationDbContext context)
+        protected override void Seed(MusicStation.Data.MusicStationDbContext context)
         {
 
         }

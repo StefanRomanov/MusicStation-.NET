@@ -1,4 +1,4 @@
-﻿@model List<MusicStation.Data.Song>
+﻿@model IEnumerable<MusicStation.Models.Songs.SongListModel>
 
 @{ 
     ViewBag.Title = "List";
@@ -13,7 +13,7 @@
                 @if (@song.ImagePath != null)
                 {
                     <a href="@Url.Action("Details", "Song", new { @id = song.Id }, null)">
-                        <img src="@song.ImagePath" class="img-responsive; img-thumbnail" style="height: 140px; width: 150px" />
+                        <img src="@song.ImagePath" class="img-responsive img-thumbnail" style="height: 140px; width: 150px" />
                     </a>
                 }
                 </div>
@@ -29,9 +29,12 @@
                         </audio>
                     </p>
                     <footer class="pull-right" style="padding-right: 10px">
-                        <small>
-                            -- Added by @song.User.UserName
-                        </small>
+                            @if (!Request.QueryString.ToString().Contains("user"))
+                            {
+                                <small>
+                                    -- Added by @song.User.UserName
+                                </small>
+                            }
                     </footer>
                 </div>
             </div>

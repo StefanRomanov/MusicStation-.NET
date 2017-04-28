@@ -7,7 +7,7 @@
 
     <ul class="nav navbar-nav navbar-right">
         <li>
-            <a href="/Song/ListByUser?user=@User.Identity.GetUserName()">My Songs</a>
+            <a href="/Song/List?user=@User.Identity.GetUserName()">My Songs</a>
         </li>
         <li>
             @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })

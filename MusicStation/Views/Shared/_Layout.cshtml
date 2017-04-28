@@ -34,7 +34,7 @@
                             @foreach (var item in Enum.GetValues(typeof(Genre)))
                             {
                                 <li>
-                                    @Html.ActionLink(@item.ToString(), "ListByGenre", "Song", new { @genre = item.ToString() }, null)
+                                    @Html.ActionLink(@item.ToString(), "List", "Song", new { @genre = item.ToString() }, null)
                                 </li>
                             }
                         </ul>

@@ -204,6 +204,8 @@
     <Compile Include="Models\FileAttribute.cs" />
     <Compile Include="Data\MusicStationDbContext.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Songs\SongListModel.cs" />
+    <Compile Include="Models\Songs\SongEditModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -270,8 +272,8 @@
     <Content Include="Views\Song\List.cshtml" />
     <Content Include="Views\Song\Details.cshtml" />
     <Content Include="Views\Song\ListByUser.cshtml" />
-    <Content Include="Views\Song\ListByGenre.cshtml" />
     <Content Include="Views\Song\Delete.cshtml" />
+    <Content Include="Views\Song\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

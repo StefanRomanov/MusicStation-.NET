@@ -1,4 +1,5 @@
 ﻿using Microsoft.Owin;
+using MusicStation.Data;
 using MusicStation.Migrations;
 using MusicStation.Models;
 using Owin;

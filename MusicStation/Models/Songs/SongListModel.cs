@@ -1,12 +1,14 @@
-﻿using System;
+﻿using MusicStation.Data;
+using MusicStation.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace MusicStation.Data
+namespace MusicStation.Models.Songs
 {
-    public class Song
+    public class SongListModel
     {
         public int Id { get; set; }
 
@@ -18,18 +20,14 @@ namespace MusicStation.Data
         [StringLength(50)]
         public string Title { get; set; }
 
-        public string Details { get; set; }
-
         public Genre Genre { get; set; }
 
+        [Display(Name = "Image")]
         public string ImagePath { get; set; }
 
         [Required]
-        [MaxLength(52428800)]
-        [Display(Name ="File")]
+        [Display(Name = "File")]
         public string FilePath { get; set; }
-
-        public string UserId { get; set; }
 
         public User User { get; set; }
     }

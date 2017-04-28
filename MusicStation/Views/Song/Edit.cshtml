@@ -1,0 +1,51 @@
+﻿@model MusicStation.Models.Songs.SongEditModel
+@{
+    ViewBag.Title = "Edit";
+}
+
+<div class="container">
+    <div class="well">
+        <h3>
+            Edit Song
+        </h3>
+        @using (Html.BeginForm("Edit", "Song", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.UserId)
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Artist, new { @class = "control-label col-sm-4" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.Artist, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Title, new { @class = "control-label col-sm-4" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Genre, new { @class = "control-label col-sm-4" })
+                <div class="col-sm-4">
+                    @Html.EnumDropDownListFor(m => m.Genre, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Details, new { @class = "control-label col-sm-4" })
+                <div class="col-sm-4">
+                    @Html.TextAreaFor(m => m.Details, new { @class = "form-control", @rows = "7" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4 col-sm-offset-4">
+                    @Html.ActionLink("Cancel", "Details", "Song", new { @id = Model.Id }, new { @class = "btn btn-default btn-sm" })
+                    <input type="submit" value="Edit" class="btn btn-success btn-sm" />
+                </div>
+            </div>
+        }
+    </div>
+</div>

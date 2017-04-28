@@ -10,12 +10,15 @@
             <img src="@Model.ImagePath" class="img-responsive; img-thumbnail" />
 
             <div class="row" style="padding-top:30px" >
-                <a class="btn btn-default btn-sm" href="/Song/ListByUser?user=@Model.User.UserName" >All Songs By This User</a>
+                <a class="btn btn-default btn-sm" href="/Song/List?user=@Model.User.UserName" >All Songs By This User</a>
+            </div>
+            <div class="row" style="padding-top:10px">
+                <a class="btn btn-default btn-sm" href="/Song/List?=@Model.Genre">All Songs In This Genre</a>
             </div>
         </div>
        <div class="col-lg-8">
            <div class="row">
-               <h3 style="font:bold, Times New Roman">
+               <h3>
                    @Model.Artist - @Model.Title
                </h3>
            </div>
@@ -32,6 +35,7 @@
        </div>
     </div>
     <footer class="pull-right" style="padding-right: 10px">
+        @Html.ActionLink("Edit", "Edit", "Song", new { @id = Model.Id }, new { @class = "btn btn-warning btn-sm" })
         @Html.ActionLink("Delete", "Delete", "Song", new { @id = Model.Id }, new { @class = "btn btn-danger btn-sm" })
         @Html.ActionLink("Back", "List", "Song", null, new { @class = "btn btn-default btn-sm" })
     </footer>

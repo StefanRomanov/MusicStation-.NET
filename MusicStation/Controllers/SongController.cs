@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using MusicStation.Data;
+using MusicStation.Models.Songs;
 using MusicStation.Models;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -12,50 +13,38 @@ namespace MusicStation.Controllers
     public class SongController : Controller
     {
         [HttpGet]
-        public ActionResult List()
+        public ActionResult List(string user, string genre)
         {
             using(var db = new MusicStationDbContext())
             {
-                var songs = db.Songs
-                    .Include(s => s.User)
-                    .ToList();
+                var songsQuery = db.Songs.AsQueryable();
 
-                return View(songs);
-            }
-        }
-
-        [HttpGet]
-        public ActionResult ListByUser(string user)
-        {
-            using (var db = new MusicStationDbContext())
-            {
-                if(user == null)
+                if (user != null)
                 {
-                    return HttpNotFound();
+                    songsQuery = songsQuery
+                       .Where(s => s.User.UserName == user);
+                }
+                
+                if (genre != null)
+                {
+                    songsQuery = songsQuery
+                      .Where(s => s.Genre.ToString() == genre);
+                    
                 }
 
-                var songs = db.Songs
-                    .Where(s => s.User.UserName == user)
-                    .Include(s => s.User)
-                    .ToList();
-
-                return View(songs);
-            }
-        }
-
-        [HttpGet]
-        public ActionResult ListByGenre(string genre)
-        {
-            if(genre == null)
-            {
-                return HttpNotFound();
-            }
-
-            using (var db = new MusicStationDbContext())
-            {
-                var songs = db.Songs
-                    .Where(s => s.Genre.ToString() == genre)
-                    .Include(s => s.User)
+                var songs = songsQuery
+                    .OrderByDescending(s => s.Id)
+                    .Select(s => new SongListModel
+                    {
+                        Id = s.Id,
+                        Artist = s.Artist,
+                        Title = s.Title,
+                        Genre = s.Genre,
+                        ImagePath = s.ImagePath,
+                        FilePath = s.FilePath,
+                        User = s.User
+                        
+                    })
                     .ToList();
 
                 return View(songs);
@@ -193,13 +182,81 @@ namespace MusicStation.Controllers
                     System.IO.File.Delete(imagePath);
                 }
 
-                System.IO.File.Delete(filePath);
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
 
                 db.Songs.Remove(song);
                 db.SaveChanges();
 
                 return RedirectToAction("List");
             }
+        }
+
+        [Authorize]
+        [HttpGet]
+        public ActionResult Edit(int? id)
+        {
+            if(id == null)
+            {
+                return HttpNotFound();
+            }
+
+            using(var db = new MusicStationDbContext())
+            {
+                var song = db.Songs
+                    .Where(s => s.Id == id)
+                    .Include(s => s.User)
+                    .FirstOrDefault();
+
+                if(song == null)
+                {
+                    return HttpNotFound();
+                }
+
+                var model = new SongEditModel();
+
+                model.Id = song.Id;
+                model.Artist = song.Artist;
+                model.Title = song.Title;
+                model.Details = song.Details;
+                model.Genre = song.Genre;
+
+                return View(model);
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult Edit(SongEditModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var db = new MusicStationDbContext())
+                {
+                    var song = db.Songs
+                        .Where(s => s.Id == model.Id)
+                        .FirstOrDefault();
+
+                    if(song == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    song.Id = model.Id;
+                    song.Artist = model.Artist;
+                    song.Title = model.Title;
+                    song.Details = model.Details;
+                    song.Genre = model.Genre;
+
+                    db.Entry(song).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return RedirectToAction("Details",new { id = song.Id });
+                }
+            }
+            return View(model);
         }
     }
 }
