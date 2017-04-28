@@ -16,6 +16,12 @@
                         <img src="@song.ImagePath" class="img-responsive img-thumbnail" style="height: 140px; width: 150px" />
                     </a>
                 }
+                else
+                {
+                    <a href="@Url.Action("Details", "Song", new { @id = song.Id }, null)">
+                        <img src="~/Content/Images/default.png" class="img-responsive img-thumbnail" style="height: 140px; width: 150px" />
+                    </a>
+                }
                 </div>
                 <div class="col-sm-10">
                     <p>

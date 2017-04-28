@@ -204,6 +204,7 @@
     <Compile Include="Models\FileAttribute.cs" />
     <Compile Include="Data\MusicStationDbContext.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Songs\SongDetailsModel.cs" />
     <Compile Include="Models\Songs\SongListModel.cs" />
     <Compile Include="Models\Songs\SongEditModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

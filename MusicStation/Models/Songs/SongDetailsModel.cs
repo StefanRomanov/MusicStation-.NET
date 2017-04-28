@@ -1,12 +1,13 @@
-﻿using System;
+﻿using MusicStation.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace MusicStation.Data
+namespace MusicStation.Models.Songs
 {
-    public class Song
+    public class SongDetailsModel
     {
         public int Id { get; set; }
 
@@ -25,10 +26,8 @@ namespace MusicStation.Data
         public string ImagePath { get; set; }
 
         [Required]
-        [Display(Name ="File")]
+        [Display(Name = "File")]
         public string FilePath { get; set; }
-
-        public string UserId { get; set; }
 
         public User User { get; set; }
     }

@@ -13,11 +13,17 @@ namespace MusicStation.Controllers
     public class SongController : Controller
     {
         [HttpGet]
-        public ActionResult List(string user, string genre)
+        public ActionResult List(string user = null, string genre = null, string search = null)
         {
             using(var db = new MusicStationDbContext())
             {
                 var songsQuery = db.Songs.AsQueryable();
+
+                if(search != null)
+                {
+                    songsQuery = songsQuery
+                        .Where(s => s.Artist.ToLower().Contains(search.ToLower()) || s.Title.ToLower().Contains(search.ToLower()));
+                }
 
                 if (user != null)
                 {
@@ -65,14 +71,25 @@ namespace MusicStation.Controllers
                     .Where(s => s.Id == id)
                     .Include(s => s.User)
                     .FirstOrDefault();
-                    
 
                 if(song == null)
                 {
                     return HttpNotFound();
                 }
 
-                return View(song);
+                var model = new SongDetailsModel
+                {
+                    Artist = song.Artist,
+                    Title = song.Title,
+                    Details = song.Details,
+                    Genre = song.Genre,
+                    ImagePath = song.ImagePath,
+                    FilePath = song.FilePath,
+                    Id = song.Id,
+                    User = song.User
+                };
+
+                return View(model);
             }
         }
 
