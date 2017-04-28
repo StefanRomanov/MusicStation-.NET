@@ -2,27 +2,24 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron" style="text-align:center">
+<div class="jumbotron" style="text-align: center">
     <h1>Welcome To The MusicStation</h1>
     <p class="lead">Listen to music from around the Globe!</p>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Create Your Account</h2>
-        <p>
-            Register to share your favorite songs with the World!
-        </p>
-        <p><a href="/Account/Register" class="btn btn-primary btn-lg">Join Us</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Look around</h2>
-        <p>Listen to your favorite songs!</p>
-        <p>@Html.ActionLink("Browse","List", "Song", null, new { @class = "btn btn-primary btn-lg"})</p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Create New Account</h2>
+            <p>
+                Register to share your favorite songs with the World!
+            </p>
+            <p><a href="/Account/Register" class="btn btn-primary btn-lg">Join Us</a></p>
+        </div>
+        <div class="col-md-6">
+            <h2>Look around</h2>
+            <p>Find your new favorite song!</p>
+            <p>@Html.ActionLink("Browse", "List", "Song", null, new { @class = "btn btn-primary btn-lg", @style = "text-align: end" })</p>
+        </div>
     </div>
 </div>

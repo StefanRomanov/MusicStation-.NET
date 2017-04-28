@@ -13,10 +13,12 @@ namespace MusicStation.Controllers
     public class SongController : Controller
     {
         [HttpGet]
-        public ActionResult List(string user = null, string genre = null, string search = null)
+        public ActionResult List(int page = 1, string user = null, string genre = null, string search = null)
         {
             using(var db = new MusicStationDbContext())
             {
+                var pageSize = 7;
+
                 var songsQuery = db.Songs.AsQueryable();
 
                 if(search != null)
@@ -40,6 +42,8 @@ namespace MusicStation.Controllers
 
                 var songs = songsQuery
                     .OrderByDescending(s => s.Id)
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
                     .Select(s => new SongListModel
                     {
                         Id = s.Id,
@@ -52,6 +56,8 @@ namespace MusicStation.Controllers
                         
                     })
                     .ToList();
+
+                ViewBag.CurrentPage = page;
 
                 return View(songs);
             }

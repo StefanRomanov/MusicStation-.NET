@@ -6,6 +6,11 @@
 
 <div class="container">
     <div class="row">
+        @if (!Model.Any())
+        {
+            <h2 class="text-center">No Songs Here!</h2>
+        }
+
         @foreach (var song in Model)
         {
             <div class="container" style="margin-bottom: 10px; margin-top: 10px">
@@ -47,3 +52,13 @@
         }
     </div>
 </div>
+@{ 
+    var currentUserQuery = Request.QueryString["user"];
+    var currentSearchQuery = Request.QueryString["search"];
+    var currentGenreQuery = Request.QueryString["genre"];
+}
+
+<p style="text-align: center">
+    <a href="/Song/List?page=@(ViewBag.CurrentPage - 1)@(currentUserQuery != null ?"&user=" + currentUserQuery : string.Empty)@(currentSearchQuery != null ?"&search=" + currentSearchQuery : string.Empty)@(currentGenreQuery != null ?"&genre=" + currentGenreQuery : string.Empty)"class="btn btn-default btn-sm @(ViewBag.CurrentPage == 1 ? "disabled" : string.Empty)"><< Back</a>
+    <a href="/Song/List?page=@(ViewBag.CurrentPage + 1)@(currentUserQuery != null ?"&user=" + currentUserQuery : string.Empty)@(currentSearchQuery != null ?"&search=" + currentSearchQuery : string.Empty)@(currentGenreQuery != null ?"&genre=" + currentGenreQuery : string.Empty)"class="btn btn-default btn-sm @(!Model.Any() || Model.Count() < 7 ? "disabled" : string.Empty)">Next >></a>
+</p>
