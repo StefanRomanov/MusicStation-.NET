@@ -30,5 +30,10 @@ namespace MusicStation.Models.Songs
         public string FilePath { get; set; }
 
         public User User { get; set; }
+
+        public bool IsAuthor(string name)
+        {
+            return this.User.UserName.Equals(name);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MusicStation.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace MusicStation.Data
         public string Details { get; set; }
 
         public Genre Genre { get; set; }
-
+        
         public string ImagePath { get; set; }
 
         [Required]
@@ -31,5 +32,10 @@ namespace MusicStation.Data
         public string UserId { get; set; }
 
         public User User { get; set; }
+
+        public bool IsAuthor(string name)
+        {
+            return this.User.UserName.Equals(name);
+        }
     }
 }

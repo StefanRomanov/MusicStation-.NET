@@ -14,6 +14,8 @@ namespace MusicStation.Data
         Rap,
         Pop,
         Folk,
+        Trance,
+        Dubstep,
         Other
     }
 }

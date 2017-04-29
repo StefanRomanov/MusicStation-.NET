@@ -274,6 +274,7 @@
     <Content Include="Views\Song\Details.cshtml" />
     <Content Include="Views\Song\Delete.cshtml" />
     <Content Include="Views\Song\Edit.cshtml" />
+    <Content Include="Views\Song\SongError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

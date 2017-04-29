@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Net;
 
 namespace MusicStation.Controllers
 {
@@ -15,13 +16,13 @@ namespace MusicStation.Controllers
         [HttpGet]
         public ActionResult List(int page = 1, string user = null, string genre = null, string search = null)
         {
-            using(var db = new MusicStationDbContext())
+            using (var db = new MusicStationDbContext())
             {
                 var pageSize = 7;
 
                 var songsQuery = db.Songs.AsQueryable();
 
-                if(search != null)
+                if (search != null)
                 {
                     songsQuery = songsQuery
                         .Where(s => s.Artist.ToLower().Contains(search.ToLower()) || s.Title.ToLower().Contains(search.ToLower()));
@@ -32,12 +33,12 @@ namespace MusicStation.Controllers
                     songsQuery = songsQuery
                        .Where(s => s.User.UserName == user);
                 }
-                
+
                 if (genre != null)
                 {
                     songsQuery = songsQuery
                       .Where(s => s.Genre.ToString() == genre);
-                    
+
                 }
 
                 var songs = songsQuery
@@ -53,7 +54,7 @@ namespace MusicStation.Controllers
                         ImagePath = s.ImagePath,
                         FilePath = s.FilePath,
                         User = s.User
-                        
+
                     })
                     .ToList();
 
@@ -66,7 +67,7 @@ namespace MusicStation.Controllers
         [HttpGet]
         public ActionResult Details(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return HttpNotFound();
             }
@@ -78,7 +79,7 @@ namespace MusicStation.Controllers
                     .Include(s => s.User)
                     .FirstOrDefault();
 
-                if(song == null)
+                if (song == null)
                 {
                     return HttpNotFound();
                 }
@@ -110,7 +111,7 @@ namespace MusicStation.Controllers
         [HttpPost]
         public ActionResult Add(Song song, HttpPostedFileBase FilePath, HttpPostedFileBase image)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 using (var db = new MusicStationDbContext())
                 {
@@ -118,52 +119,70 @@ namespace MusicStation.Controllers
 
                     song.UserId = userId;
 
-                    var filePath = "/Content/Songs/";
-                    var imagesPath = "/Content/Images/";
-                    var fileName = FilePath.FileName;
-                    var uploadPath = filePath + fileName;
-                    var physicalPath = Server.MapPath(uploadPath);
-
-                    if(image != null)
+                    if (image != null)
                     {
-                        var imageName = image.FileName;
-                        var imageUploadPath = imagesPath + imageName;
-                        var imagePhysicalPath = Server.MapPath(imageUploadPath);
+                        var allowedImageTypes = new[] { "image/jpg", "image/jpeg", "image/png" };
 
-                        image.SaveAs(imagePhysicalPath);
+                        if (allowedImageTypes.Contains(image.ContentType))
+                        {
+                            var imagesPath = "/Content/Images/";
+                            var imageName = image.FileName;
+                            var imageUploadPath = imagesPath + imageName;
+                            var imagePhysicalPath = Server.MapPath(imageUploadPath);
 
-                        song.ImagePath = imageUploadPath;
+                            image.SaveAs(imagePhysicalPath);
+
+                            song.ImagePath = imageUploadPath;
+                        }
                     }
 
-                    FilePath.SaveAs(physicalPath);
+                    var allowedAudioTypes = new[] { "audio/mp3" };
 
-                    song.FilePath = uploadPath;
+                    if (allowedAudioTypes.Contains(FilePath.ContentType))
+                    {
+                        var filePath = "/Content/Songs/";
+                        var fileName = FilePath.FileName;
+                        var uploadPath = filePath + fileName;
+                        var physicalPath = Server.MapPath(uploadPath);
+                        FilePath.SaveAs(physicalPath);
 
-                    db.Songs.Add(song);
-                    db.SaveChanges();
+                        song.FilePath = uploadPath;
 
-                    return RedirectToAction("List");
+                        db.Songs.Add(song);
+                        db.SaveChanges();
+
+                        return RedirectToAction("List");
+                    }
+                    else
+                    {
+                        return RedirectToAction("SongError");
+                    }
                 }
             }
 
             return View(song);
         }
 
+
         [Authorize]
         [HttpGet]
         public ActionResult Delete(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return HttpNotFound();
             }
-
             using (var db = new MusicStationDbContext())
             {
                 var song = db.Songs
                     .Where(s => s.Id == id)
                     .Include(s => s.User)
                     .FirstOrDefault();
+
+                if (!IsAuthorizedToChange(song))
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+                }
 
                 if (song == null)
                 {
@@ -221,19 +240,24 @@ namespace MusicStation.Controllers
         [HttpGet]
         public ActionResult Edit(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return HttpNotFound();
             }
 
-            using(var db = new MusicStationDbContext())
+            using (var db = new MusicStationDbContext())
             {
                 var song = db.Songs
                     .Where(s => s.Id == id)
                     .Include(s => s.User)
                     .FirstOrDefault();
 
-                if(song == null)
+                if (!IsAuthorizedToChange(song))
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+                }
+
+                if (song == null)
                 {
                     return HttpNotFound();
                 }
@@ -262,7 +286,7 @@ namespace MusicStation.Controllers
                         .Where(s => s.Id == model.Id)
                         .FirstOrDefault();
 
-                    if(song == null)
+                    if (song == null)
                     {
                         return HttpNotFound();
                     }
@@ -276,10 +300,24 @@ namespace MusicStation.Controllers
                     db.Entry(song).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    return RedirectToAction("Details",new { id = song.Id });
+                    return RedirectToAction("Details", new { id = song.Id });
                 }
             }
             return View(model);
+        }
+
+        private bool IsAuthorizedToChange(Song song)
+        {
+            bool IsAdmin = this.User.IsInRole("Admin");
+            bool IsAuthor = song.IsAuthor(this.User.Identity.GetUserName());
+
+            return IsAdmin || IsAuthor;
+        }
+
+        [HttpGet]
+        public ActionResult SongError()
+        {
+            return View();
         }
     }
 }

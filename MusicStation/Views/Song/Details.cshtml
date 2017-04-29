@@ -1,4 +1,5 @@
 ﻿@model MusicStation.Models.Songs.SongDetailsModel
+@using Microsoft.AspNet.Identity;
 
 @{
     ViewBag.Title = "Details";
@@ -41,8 +42,11 @@
        </div>
     </div>
     <footer class="pull-right" style="padding-right: 10px">
-        @Html.ActionLink("Edit", "Edit", "Song", new { @id = Model.Id }, new { @class = "btn btn-warning btn-sm" })
-        @Html.ActionLink("Delete", "Delete", "Song", new { @id = Model.Id }, new { @class = "btn btn-danger btn-sm" })
+        @if (User.IsInRole("Admin") || Model.IsAuthor(User.Identity.GetUserName()))
+        {
+            @Html.ActionLink("Edit", "Edit", "Song", new { @id = Model.Id }, new { @class = "btn btn-warning btn-sm"})
+            @Html.ActionLink("Delete", "Delete", "Song", new { @id = Model.Id }, new { @class = "btn btn-danger btn-sm" })
+        }
         @Html.ActionLink("Back", "List", "Song", null, new { @class = "btn btn-default btn-sm" })
     </footer>
 </div>
