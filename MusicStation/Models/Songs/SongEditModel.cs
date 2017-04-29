@@ -28,6 +28,8 @@ namespace MusicStation.Models.Songs
         [Display(Name = "Change Genre")]
         public Genre Genre { get; set; }
 
+        public string ImagePath { get; set; }
+
         public string UserId { get; set; }
     }
 }

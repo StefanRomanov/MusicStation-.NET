@@ -126,7 +126,7 @@ namespace MusicStation.Controllers
                         if (allowedImageTypes.Contains(image.ContentType))
                         {
                             var imagesPath = "/Content/Images/";
-                            var imageName = image.FileName;
+                            var imageName = userId.ToString() + image.FileName;
                             var imageUploadPath = imagesPath + imageName;
                             var imagePhysicalPath = Server.MapPath(imageUploadPath);
 
@@ -141,7 +141,7 @@ namespace MusicStation.Controllers
                     if (allowedAudioTypes.Contains(FilePath.ContentType))
                     {
                         var filePath = "/Content/Songs/";
-                        var fileName = FilePath.FileName;
+                        var fileName = userId.ToString() + FilePath.FileName;
                         var uploadPath = filePath + fileName;
                         var physicalPath = Server.MapPath(uploadPath);
                         FilePath.SaveAs(physicalPath);
@@ -276,7 +276,7 @@ namespace MusicStation.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult Edit(SongEditModel model)
+        public ActionResult Edit(SongEditModel model, HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {
@@ -291,11 +291,34 @@ namespace MusicStation.Controllers
                         return HttpNotFound();
                     }
 
+                    var originalImageUploadPath = Server.MapPath(song.ImagePath);
+
+                    if(image == null)
+                    {
+                        model.ImagePath = song.ImagePath;
+                    }
+                    else
+                    {
+                        var imagesPath = "/Content/Images/";
+                        var newImageName = song.Id.ToString() + image.FileName;
+                        var newImageUploadPath = imagesPath + newImageName;
+                        var newImagePhysicalPath = Server.MapPath(newImageUploadPath);
+                        if(song.ImagePath != null)
+                        {
+                            System.IO.File.Delete(originalImageUploadPath);
+                        }
+                        
+
+                        image.SaveAs(newImagePhysicalPath);
+                        model.ImagePath = newImageUploadPath;
+                    }
+
                     song.Id = model.Id;
                     song.Artist = model.Artist;
                     song.Title = model.Title;
                     song.Details = model.Details;
                     song.Genre = model.Genre;
+                    song.ImagePath = model.ImagePath;
 
                     db.Entry(song).State = EntityState.Modified;
                     db.SaveChanges();
