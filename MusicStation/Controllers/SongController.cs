@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Net;
+using System;
 
 namespace MusicStation.Controllers
 {
@@ -119,14 +120,18 @@ namespace MusicStation.Controllers
 
                     song.UserId = userId;
 
+                    var random = new Random();
+                    var number = random.Next();
+
                     if (image != null)
                     {
                         var allowedImageTypes = new[] { "image/jpg", "image/jpeg", "image/png" };
 
+
                         if (allowedImageTypes.Contains(image.ContentType))
                         {
                             var imagesPath = "/Content/Images/";
-                            var imageName = userId.ToString() + image.FileName;
+                            var imageName = number.ToString() + image.FileName;
                             var imageUploadPath = imagesPath + imageName;
                             var imagePhysicalPath = Server.MapPath(imageUploadPath);
 
@@ -141,7 +146,7 @@ namespace MusicStation.Controllers
                     if (allowedAudioTypes.Contains(FilePath.ContentType))
                     {
                         var filePath = "/Content/Songs/";
-                        var fileName = userId.ToString() + FilePath.FileName;
+                        var fileName = number.ToString() + FilePath.FileName;
                         var uploadPath = filePath + fileName;
                         var physicalPath = Server.MapPath(uploadPath);
                         FilePath.SaveAs(physicalPath);
