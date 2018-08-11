@@ -291,6 +291,8 @@ namespace MusicStation.Controllers
                         .Where(s => s.Id == model.Id)
                         .FirstOrDefault();
 
+                    var allowedImageTypes = new[] { "image/jpg", "image/jpeg", "image/png" };
+
                     if (song == null)
                     {
                         return HttpNotFound();
@@ -298,7 +300,7 @@ namespace MusicStation.Controllers
 
                     var originalImageUploadPath = Server.MapPath(song.ImagePath);
 
-                    if(image == null)
+                    if(image == null || !allowedImageTypes.Contains(image.ContentType))
                     {
                         model.ImagePath = song.ImagePath;
                     }
@@ -308,11 +310,10 @@ namespace MusicStation.Controllers
                         var newImageName = song.Id.ToString() + image.FileName;
                         var newImageUploadPath = imagesPath + newImageName;
                         var newImagePhysicalPath = Server.MapPath(newImageUploadPath);
-                        if(song.ImagePath != null)
+                        if (song.ImagePath != null)
                         {
                             System.IO.File.Delete(originalImageUploadPath);
                         }
-                        
 
                         image.SaveAs(newImagePhysicalPath);
                         model.ImagePath = newImageUploadPath;
