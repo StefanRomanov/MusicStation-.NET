@@ -1,0 +1,7 @@
+{
+  "@context": "https://w3id.org/openbadges/v2",
+  "id": "~/blockcert/cert-tools/sample_data/issuer_test/revocation-list.json",
+  "type": "RevocationList",
+  "issuer": "~/blockcert/cert-tools/sample_data/issuer_test/testid.json",
+  "revokedAssertions": []
+}
