@@ -3,5 +3,10 @@
   "id": "https://raw.githubusercontent.com/StefanRomanov/MusicStation-.NET/master/revocation-list.json",
   "type": "RevocationList",
   "issuer": "https://raw.githubusercontent.com/StefanRomanov/MusicStation-.NET/master/testid.json",
-  "revokedAssertions": []
+  "revokedAssertions": [
+    {
+      "id":"urn:uuid:54abcd55-5fb7-4690-b19b-0ac29445a214",
+      "revocationReason": "Honor code violation"
+    }
+  ]
 }
