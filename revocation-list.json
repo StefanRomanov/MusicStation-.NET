@@ -2,6 +2,6 @@
   "@context": "https://w3id.org/openbadges/v2",
   "id": "~/blockcert/cert-tools/sample_data/issuer_test/revocation-list.json",
   "type": "RevocationList",
-  "issuer": "~/blockcert/cert-tools/sample_data/issuer_test/testid.json",
+  "issuer": "https://raw.githubusercontent.com/StefanRomanov/MusicStation-.NET/master/testid.json",
   "revokedAssertions": []
 }
