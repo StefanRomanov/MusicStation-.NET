@@ -5,8 +5,8 @@
   ],
   "type": "Profile",
   "id": "https://raw.githubusercontent.com/StefanRomanov/MusicStation-.NET/master/testid.json",
-  "name": "University of Learning",
-  "url": "https://www.issuer.org",
+  "name": "CHanged University Name",
+  "url": "Google.com",
   "introductionURL": "https://www.issuer.org/intro/",
   "publicKey": [
     {
