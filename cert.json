@@ -58,29 +58,5 @@
                 "name": "Pesho Petrov"
             }
         ]
-    },
-    "verification": {
-        "type": [
-            "MerkleProofVerification2017",
-            "Extension"
-        ],
-        "publicKey": "ecdsa-koblitz-pubkey:mk2zbLSLPBNQoxDMkCqV1eWWHaUJGBbWdP"
-    },
-    "diploma_id": "3034",
-    "signature": {
-        "type": [
-            "MerkleProof2017",
-            "Extension"
-        ],
-        "merkleRoot": "ef8d4be8a6f330a8d61be90a19ad10f3a9cfc5592b63b2dd04af10cb771097df",
-        "targetHash": "ef8d4be8a6f330a8d61be90a19ad10f3a9cfc5592b63b2dd04af10cb771097df",
-        "proof": [],
-        "anchors": [
-            {
-                "sourceId": "416fe0fc5ebb02e148de557af9f371b002873529a3eb9b5347370ec93db3840f",
-                "type": "BTCOpReturn",
-                "chain": "bitcoinTestnet"
-            }
-        ]
     }
 }
